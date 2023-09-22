@@ -5,21 +5,30 @@ class ExternalCore extends BaseExternalCore {
     String endpoint, {
     MethodsExternalCore method = MethodsExternalCore.get,
     dynamic body,
+    Map<String, dynamic> queryParameters = BaseExternalCore.defaultQueryParameters,
+    bool isAuth = true,
+    bool errorHandling = true,
+    int? statusCodeExpected,
   }) async {
     try {
       super.endpoint = endpoint;
       super.method = method;
+      super.isAuth = isAuth;
+      super.errorHandling = errorHandling;
+      super.statusCodeExpected = statusCodeExpected;
 
-      final result = await client.request<dynamic>(
-        super.endpoint,
-        options: makeOptions(),
-      );
-
-      print(result);
+      await _doRequest();
 
       return this;
     } catch (e) {
-      return this;
+      rethrow;
     }
+  }
+
+  Future<void> _doRequest() async {
+    response = await client.request<dynamic>(
+      super.endpoint,
+      options: await makeOptions(),
+    );
   }
 }
