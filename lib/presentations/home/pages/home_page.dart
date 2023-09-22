@@ -8,13 +8,20 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const TemplateUI(
+    return TemplateUI(
       Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TypographyUI.normal('normal'),
-            TypographyUI.title('title'),
+            InkWell(
+              child: TypographyUI.title('title'),
+              onTap: () {
+                ExternalCore().doRequest(
+                  'calendars/general-en/today',
+                );
+              },
+            ),
           ],
         ),
       ),
